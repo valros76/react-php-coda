@@ -1,13 +1,15 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import AddPerso from "~/components/AddPerso/AddPerso";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Accueil" },
+    { name: "description", content: "Bienvenue sur l'application React PHP Coda." },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  return <>
+    <AddPerso/>
+  </>;
 }
