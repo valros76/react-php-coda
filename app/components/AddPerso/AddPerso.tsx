@@ -159,7 +159,7 @@ export default function AddPerso() {
     fetch("http://127.0.0.1:5500/perso/add", {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(perso),
     })

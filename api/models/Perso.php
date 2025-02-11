@@ -99,19 +99,63 @@ class Perso{
     $this->creation_date = $creation_date;
   }
 
+  public function initPerso(array $perso){
+    $pseudo = $perso["pseudo"];
+    $title = $perso["title"];
+    $job = $perso["job"];
+    $stats = $perso["stats"];
+    $this->setPseudo($pseudo);
+    $this->setTitle($title);
+    $this->setJob($job);
+    $this->setStatStrength($stats["strength"]);
+    $this->setStatDexterity($stats["dexterity"]);
+    $this->setStatLuck($stats["luck"]);
+    $this->setStatIntelligence($stats["intelligence"]);
+    $this->setStatWisdom($stats["wisdom"]);
+  }
+
+  public function getAllProperties(){
+    return [
+      "pseudo" => $this->getPseudo(),
+      "title" => $this->getTitle(),
+      "job" => $this->getJob(),
+      "stats" => [
+        "strength" => $this->getStatStrength(),
+        "dexterity" => $this->getStatDexterity(),
+        "luck" => $this->getStatLuck(),
+        "intelligence" => $this->getStatIntelligence(),
+        "wisdom" => $this->getStatWisdom(),
+      ],
+    ];
+  }
+
   public function add(
     $pseudo,
     $title,
     $job,
-    $stat_strength,
-    $stat_dexterity,
-    $stat_luck,
-    $stat_intelligence,
-    $stat_wisdom
+    $stats
   ){
     /**
      * TODO add datas into BDD
      */
+    var_dump($pseudo);
+    var_dump($title);
+    var_dump($job);
+    var_dump($stats);
+    $req = $this->bdd->prepare("INSERT INTO persos(pseudo, title, job, stat_strength, stat_dexterity, stat_luck, stat_intelligence, stat_wisdom) VALUES(:pseudo, :title, :job, :strength, :dexterity, :luck, :intelligence, :wisdom)");
+    $req->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
+    $req->bindValue(":title", $title, PDO::PARAM_STR);
+    $req->bindValue(":job", $job, PDO::PARAM_STR);
+    $req->bindValue(":strength", $stats["strength"], PDO::PARAM_INT);
+    $req->bindValue(":dexterity", $stats["dexterity"], PDO::PARAM_INT);
+    $req->bindValue(":luck", $stats["luck"], PDO::PARAM_INT);
+    $req->bindValue(":intelligence", $stats["intelligence"], PDO::PARAM_INT);
+    $req->bindValue(":wisdom", $stats["wisdom"], PDO::PARAM_INT);
+    if(!$req->execute()){
+      return false;
+    }
+    $req->closeCursor();
+    return true;
   }
 
   private function setBdd($bdd){

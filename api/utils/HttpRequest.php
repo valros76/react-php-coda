@@ -57,17 +57,17 @@ class HttpRequest
         break;
       case "POST":
       case "PUT":
-        foreach ($this->route->getParams() as $param) {
-          var_dump($_POST[$param]);
-          if (isset($_POST[$param])) {
-            $this->params[] = $_POST[$param];
-          }
+        $jsonInput = file_get_contents("php://input");
+        $postData = json_decode($jsonInput, true);
+        if ($postData) {
+            $this->params = $postData;
         }
         break;
     }
   }
 
-  public function run($config){
+  public function run($config)
+  {
     $this->bindParam();
     $this->route->run($this, $config);
   }
