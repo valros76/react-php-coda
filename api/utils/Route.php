@@ -12,7 +12,7 @@ class Route{
     $this->controller = $route->controller;
     $this->action = $route->action;
     $this->method = $route->method;
-    $this->params = $route->params;
+    $this->params = $route->params ?? $route->param;
     $this->manager = $route->manager;
   }
 

@@ -13,7 +13,10 @@
     "action": "Add",
     "method": "POST",
     "params": [
-      "perso"
+      "pseudo",
+      "title",
+      "job",
+      "stats"
     ],
     "manager": [
       "Perso"

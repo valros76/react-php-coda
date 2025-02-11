@@ -3,13 +3,13 @@ import { useEffect, useState, type FormEvent } from "react";
 export interface PersoI {
   pseudo: string | null;
   title: string | null;
-  class: string | null;
+  job: string | null;
   stats: {
-    force: number;
+    strength: number;
     dexterity: number;
     luck: number;
     intelligence: number;
-    knowledge: number;
+    wisdom: number;
   };
 }
 
@@ -26,13 +26,13 @@ export default function AddPerso() {
   let [perso, setPerso] = useState<PersoI>({
     pseudo: null,
     title: null,
-    class: null,
+    job: null,
     stats: {
-      force: 0,
+      strength: 0,
       dexterity: 0,
       luck: 0,
       intelligence: 0,
-      knowledge: 0,
+      wisdom: 0,
     },
   });
 
@@ -64,11 +64,11 @@ export default function AddPerso() {
 
   useEffect(() => {
     if (
-      perso.stats.force <= 0 ||
+      perso.stats.strength <= 0 ||
       perso.stats.dexterity <= 0 ||
       perso.stats.intelligence <= 0 ||
       perso.stats.luck <= 0 ||
-      perso.stats.knowledge <= 0
+      perso.stats.wisdom <= 0
     ) {
       randomStats(classPerso);
       console.table(perso);
@@ -123,7 +123,7 @@ export default function AddPerso() {
     }
     setPerso((perso) => {
       perso.stats = {
-        force: generateRandomIndex(range.min, range.max),
+        strength: generateRandomIndex(range.min, range.max),
         dexterity: generateRandomIndex(
           range.min,
           range.max
@@ -133,10 +133,7 @@ export default function AddPerso() {
           range.min,
           range.max
         ),
-        knowledge: generateRandomIndex(
-          range.min,
-          range.max
-        ),
+        wisdom: generateRandomIndex(range.min, range.max),
       };
       return perso;
     });
@@ -144,27 +141,30 @@ export default function AddPerso() {
 
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
-    console.table(perso);
     if (
       perso.pseudo === null ||
       perso.title === null ||
-      perso.class === null ||
-      perso.stats.force <= 0 ||
+      perso.job === null ||
+      perso.stats.strength <= 0 ||
       perso.stats.dexterity <= 0 ||
       perso.stats.luck <= 0 ||
       perso.stats.intelligence <= 0 ||
-      perso.stats.knowledge <= 0
+      perso.stats.wisdom <= 0
     ) {
       throw new Error(
         "Une (ou plusieurs) statistique est invalide."
       );
     }
 
-    fetch("#", {
+    fetch("http://127.0.0.1:5500/perso/add", {
       method: "POST",
-      mode: "cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
       body: JSON.stringify(perso),
-    });
+    })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(`Erreur : ${err}`));
   };
 
   return (
@@ -219,7 +219,7 @@ export default function AddPerso() {
         onChange={(e) => {
           setClassPerso(e.target.value);
           setPerso((perso) => {
-            perso.class = classPerso;
+            perso.job = classPerso;
             return perso;
           });
           randomStats(classPerso);
@@ -245,9 +245,9 @@ export default function AddPerso() {
       <input
         type="number"
         name="stat_force"
-        value={perso.stats.force}
-        min={perso.stats.force}
-        max={perso.stats.force}
+        value={perso.stats.strength}
+        min={perso.stats.strength}
+        max={perso.stats.strength}
         required
       />
       <label htmlFor="stat_dexterity">Agilité</label>
@@ -283,9 +283,9 @@ export default function AddPerso() {
       <input
         type="number"
         name="stat_knowledge"
-        value={perso.stats.knowledge}
-        min={perso.stats.knowledge}
-        max={perso.stats.knowledge}
+        value={perso.stats.wisdom}
+        min={perso.stats.wisdom}
+        max={perso.stats.wisdom}
         required
       />
       <button type="submit">Créer</button>

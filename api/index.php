@@ -1,6 +1,7 @@
 <?php
-
 ini_set("date.timezone", "Europe/Paris");
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: *');
 
 require_once "./utils/Autoloader.php";
 Autoloader::register();
@@ -8,11 +9,11 @@ Autoloader::register();
 $configManager = new Config();
 [$configFile, $config] = $configManager->registerConfig();
 
-try{
+try {
   $httpRequest = new HttpRequest();
   $router = new Router();
   $httpRequest->setRoute($router->findRoute($httpRequest, $config->basepath));
   $httpRequest->run($config);
-}catch(Exception $e){
+} catch (Exception $e) {
   throw new Exception($e->getMessage());
 }

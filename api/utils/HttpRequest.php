@@ -50,16 +50,17 @@ class HttpRequest
       case "GET":
       case "DELETE":
         foreach ($this->route->getParams() as $param) {
-          if (isset($_GET["param"])) {
-            $this->addParam($_GET[$param]);
+          if (isset($_GET[$param])) {
+            $this->params[] = $_GET[$param];
           }
         }
         break;
       case "POST":
       case "PUT":
         foreach ($this->route->getParams() as $param) {
-          if (isset($_POST["param"])) {
-            $this->addParam($_POST[$param]);
+          var_dump($_POST[$param]);
+          if (isset($_POST[$param])) {
+            $this->params[] = $_POST[$param];
           }
         }
         break;
