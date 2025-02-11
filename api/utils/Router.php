@@ -13,8 +13,8 @@ class Router{
   }
 
   public function findRoute($httpRequest, $basepath){
-    $url = str_replace($basepath, "", $httpRequest->url);
-    $method = $httpRequest->method;
+    $url = str_replace($basepath, "", $httpRequest->getUrl());
+    $method = $httpRequest->getMethod();
     $routeFound = array_filter($this->listRoutes, function ($route) use ($url, $method){
       return preg_match("#^$route->path$#", $url) && $route->method == $method;
     });
