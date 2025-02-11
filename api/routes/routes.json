@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/",
+    "controller": "Home",
+    "action": "Index",
+    "method": "GET",
+    "params": [],
+    "manager": []
+  },
+  {
+    "path": "/perso/add",
+    "controller": "Perso",
+    "action": "Add",
+    "method": "POST",
+    "params": [
+      "perso"
+    ],
+    "manager": [
+      "Perso"
+    ]
+  }
+]
