@@ -11,6 +11,7 @@ class PersoController
 
     $config = new Config();
     $persoManager = new Perso(BDD::getInstance($config->getConfig()));
+
     $persoManager->initPerso(
       [
         "pseudo" => $pseudo,
@@ -24,17 +25,31 @@ class PersoController
           "wisdom" => $stats["wisdom"]
         ]
       ]
-
     );
 
     $newPerso = $persoManager->getAllProperties();
+
     if ($persoManager->add(
       $newPerso["pseudo"],
       $newPerso["title"],
       $newPerso["job"],
       $newPerso["stats"]
     )) {
+      http_response_code(200);
+      $response = json_encode([
+        "message" => "Ajout du personnage en base de données.",
+        "status" => 200
+      ]);
+      echo $response;
+      exit;
     }
-    http_response_code(200);
+
+    http_response_code(400);
+    $response = json_encode([
+      "message" => "Erreur lors de l'ajout du personnage en BDD.",
+      "status" => 400
+    ]);
+    echo $response;
+    exit;
   }
 }
