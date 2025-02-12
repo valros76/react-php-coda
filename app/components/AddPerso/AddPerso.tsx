@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useNavigate } from "react-router";
 
 export interface PersoI {
   pseudo: string | null;
@@ -15,13 +16,13 @@ export interface PersoI {
 
 export default function AddPerso() {
   /**
-   * - Requêter l'API pour transmettre les données
    * - Afficher une confirmation de création de personnage
-   * - Stocker les données en BDD
    * - Afficher la fiche du personnage
    * - Moduler les classes pour les rendre dynamiques
    * - Idée : Génération du pseudo/titre auto
    */
+
+  let navigate = useNavigate();
 
   let [perso, setPerso] = useState<PersoI>({
     pseudo: null,
@@ -126,7 +127,7 @@ export default function AddPerso() {
     });
   };
 
-  const submitForm = (e: FormEvent) => {
+  const submitForm = async (e: FormEvent) => {
     e.preventDefault();
     if (
       perso.pseudo === null ||
@@ -143,14 +144,24 @@ export default function AddPerso() {
       );
     }
 
-    fetch("http://127.0.0.1:5500/perso/add", {
+    await fetch("http://127.0.0.1:5500/perso/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(perso),
     })
-      .then((response) => console.log(response))
+      .then((response) => {
+        return response.json();
+      })
+      .then((datas) => {
+        if (datas.status !== 200) {
+          throw new Error(
+            "Le statut de la requête est invalide."
+          );
+        }
+        navigate("/");
+      })
       .catch((err) => console.log(`Erreur : ${err}`));
   };
 

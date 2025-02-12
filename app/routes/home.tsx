@@ -1,5 +1,5 @@
+import { Link } from "react-router";
 import type { Route } from "./+types/home";
-import AddPerso from "~/components/AddPerso/AddPerso";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,6 +10,8 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return <>
-    <AddPerso/>
+    <Link to="/persos/add">
+      Ajouter un personnage
+    </Link>
   </>;
 }
