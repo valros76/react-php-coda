@@ -8,6 +8,7 @@ class PersoController
     $title = $perso["title"];
     $job = $perso["job"];
     $stats = $perso["stats"];
+
     $config = new Config();
     $persoManager = new Perso(BDD::getInstance($config->getConfig()));
     $persoManager->initPerso(

@@ -130,18 +130,11 @@ class Perso{
   }
 
   public function add(
-    $pseudo,
-    $title,
-    $job,
-    $stats
+    string $pseudo,
+    string $title,
+    string $job,
+    array $stats
   ){
-    /**
-     * TODO add datas into BDD
-     */
-    var_dump($pseudo);
-    var_dump($title);
-    var_dump($job);
-    var_dump($stats);
     $req = $this->bdd->prepare("INSERT INTO persos(pseudo, title, job, stat_strength, stat_dexterity, stat_luck, stat_intelligence, stat_wisdom) VALUES(:pseudo, :title, :job, :strength, :dexterity, :luck, :intelligence, :wisdom)");
     $req->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
     $req->bindValue(":title", $title, PDO::PARAM_STR);

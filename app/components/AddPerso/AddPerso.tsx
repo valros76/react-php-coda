@@ -33,7 +33,7 @@ export default function AddPerso() {
       luck: 0,
       intelligence: 0,
       wisdom: 0,
-    },
+    }
   });
 
   let [options, SetOptions] = useState([
@@ -217,12 +217,12 @@ export default function AddPerso() {
       <select
         name="class"
         onChange={(e) => {
-          setClassPerso(e.target.value);
           setPerso((perso) => {
-            perso.job = classPerso;
+            setClassPerso(e.target.value);
+            perso.job = e.target.value;
+            randomStats(classPerso);
             return perso;
           });
-          randomStats(classPerso);
         }}
         required
       >
