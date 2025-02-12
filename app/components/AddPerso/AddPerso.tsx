@@ -148,7 +148,8 @@ export default function AddPerso() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(perso),
+      // body: JSON.stringify(perso),
+      body: "",
     })
       .then((response) => console.log(response))
       .catch((err) => console.log(`Erreur : ${err}`));

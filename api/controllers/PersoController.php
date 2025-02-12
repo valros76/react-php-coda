@@ -4,10 +4,24 @@ class PersoController
 
   public function Add(...$perso)
   {
-    $pseudo = $perso["pseudo"];
-    $title = $perso["title"];
-    $job = $perso["job"];
-    $stats = $perso["stats"];
+    $pseudo = $perso["pseudo"] ?? null;
+    $title = $perso["title"] ?? null;
+    $job = $perso["job"] ?? null;
+    $stats = $perso["stats"] ?? null;
+
+    if(
+      !$pseudo
+      || !$title
+      || !$job
+      || !$stats
+    ){
+      http_response_code(400);
+      echo json_encode([
+        "message" => "Une ou plusieurs valeurs ne sont pas définies.",
+        "status" => 400
+      ]);
+      exit;
+    }
 
     $config = new Config();
     $persoManager = new Perso(BDD::getInstance($config->getConfig()));
