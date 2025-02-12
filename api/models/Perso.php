@@ -151,6 +151,59 @@ class Perso{
     return true;
   }
 
+  public function getList(){
+    $req = $this->bdd->prepare("SELECT * FROM persos ORDER BY creation_date DESC");
+    $req->execute();
+    $persos = $req->fetchAll(PDO::FETCH_OBJ);
+    if(!$persos){
+      return null;
+    }
+    $req->closeCursor();
+    return $persos;
+  }
+
+  public function getById(int $id){
+    $req = $this->bdd->prepare("SELECT * FROM persos WHERE id=:id");
+    $req->bindValue(":id", $id, PDO::PARAM_INT);
+    $req->execute();
+    $perso = $req->fetch(PDO::FETCH_OBJ);
+    if(!$perso){
+      return null;
+    }
+    return $perso;
+  }
+
+  public function update(array $perso){
+    $req = $this->bdd->prepare("UPDATE persos SET 
+    pseudo=:pseudo,
+    title=:title,
+    job=:job,
+    stat_strength=:strength,
+    stat_dexterity=:dexterity,
+    stat_luck=:luck,
+    stat_intelligence=:intelligence,
+    stat_wisdom=:wisdom
+    WHERE id=:id
+    ");
+    $req->bindValue(":id", $perso["id"], PDO::PARAM_INT);
+    $req->bindValue(":pseudo", $perso["pseudo"], PDO::PARAM_STR);
+    $req->bindValue(":title", $perso["title"], PDO::PARAM_STR);
+    $req->bindValue(":job", $perso["job"], PDO::PARAM_STR);
+    $req->bindValue(":strength", $perso["stats"]["strength"], PDO::PARAM_STR);
+    $req->bindValue(":dexterity", $perso["stats"]["dexterity"], PDO::PARAM_STR);
+    $req->bindValue(":luck", $perso["stats"]["luck"], PDO::PARAM_STR);
+    $req->bindValue(":intelligence", $perso["stats"]["intelligence"], PDO::PARAM_STR);
+    $req->bindValue(":wisdom", $perso["stats"]["wisdom"], PDO::PARAM_STR);
+    if(!$req->execute()){
+      return false;
+    }
+    return true;
+  }
+
+  public function deleteById(int $id){
+    return $this->bdd->exec("DELETE FROM persos WHERE id={$id}");
+  }
+
   private function setBdd($bdd){
     $this->bdd = $bdd;
   }

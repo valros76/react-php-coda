@@ -33,7 +33,7 @@ export default function AddPerso() {
       luck: 0,
       intelligence: 0,
       wisdom: 0,
-    }
+    },
   });
 
   let [options, SetOptions] = useState([
@@ -60,20 +60,7 @@ export default function AddPerso() {
     },
   ]);
 
-  let [classPerso, setClassPerso] = useState("noob");
-
-  useEffect(() => {
-    if (
-      perso.stats.strength <= 0 ||
-      perso.stats.dexterity <= 0 ||
-      perso.stats.intelligence <= 0 ||
-      perso.stats.luck <= 0 ||
-      perso.stats.wisdom <= 0
-    ) {
-      randomStats(classPerso);
-      console.table(perso);
-    }
-  }, [perso]);
+  let [classPerso, setClassPerso] = useState("");
 
   let generateRandomIndex = (min: number, max: number) => {
     min = Math.ceil(min);
@@ -216,6 +203,7 @@ export default function AddPerso() {
       <label htmlFor="class">Choix de la classe</label>
       <select
         name="class"
+        defaultValue={classPerso}
         onChange={(e) => {
           setPerso((perso) => {
             setClassPerso(e.target.value);
@@ -227,6 +215,7 @@ export default function AddPerso() {
         required
       >
         <option
+          value=""
           selected
           disabled
         >
