@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import type { Route } from "../+types/root";
 import type { PersoI } from "~/shared/interfaces/Perso.interface";
+import { PersoContext } from "~/shared/contexts/PersoContext";
 
 export async function loader({ params }: Route.LoaderArgs) {
   /**
@@ -13,18 +14,7 @@ export default function ShowPersoCard({
 }: Route.ComponentProps) {
   const { id } = params;
 
-  const [perso, setPerso] = useState<PersoI>({
-    pseudo: undefined,
-    title: undefined,
-    job: undefined,
-    stats: {
-      strength: 0,
-      dexterity: 0,
-      luck: 0,
-      intelligence: 0,
-      wisdom: 0,
-    }
-  });
+  let {MIN, MAX, perso, setPerso, jobs} = useContext(PersoContext);
 
   const submitUpdateForm = (e: any) => {
     e.preventDefault();
@@ -40,9 +30,10 @@ export default function ShowPersoCard({
       <input
         type="text"
         name="pseudo"
+        value={perso.pseudo}
         onChange={(e) => {
           let newPseudo = e.target.value ?? null;
-          setPerso((perso) => {
+          setPerso((perso: PersoI) => {
             perso.pseudo = newPseudo;
             return perso;
           });
@@ -53,9 +44,10 @@ export default function ShowPersoCard({
       <input
         type="text"
         name="title"
+        value={perso.title}
         onChange={(e) => {
           let newTitle = e.target.value ?? null;
-          setPerso((perso) => {
+          setPerso((perso: PersoI) => {
             perso.title = newTitle;
             return perso;
           });
@@ -65,12 +57,10 @@ export default function ShowPersoCard({
       <label htmlFor="class">Choix de la classe</label>
       <select
         name="class"
-        defaultValue={classPerso}
+        defaultValue={perso.job}
         onChange={(e) => {
-          setPerso((perso) => {
-            setClassPerso(e.target.value);
+          setPerso((perso: PersoI) => {
             perso.job = e.target.value;
-            randomStats(classPerso);
             return perso;
           });
         }}
@@ -83,7 +73,7 @@ export default function ShowPersoCard({
         >
           -- Choisir une classe --
         </option>
-        {options.map((item) => (
+        {jobs.map((item: any) => (
           <option
             value={item.value}
             key={`${item.name}-${item.value}`}
@@ -97,8 +87,8 @@ export default function ShowPersoCard({
         type="number"
         name="stat_force"
         value={perso.stats.strength}
-        min={perso.stats.strength}
-        max={perso.stats.strength}
+        min={MIN}
+        max={MAX}
         required
       />
       <label htmlFor="stat_dexterity">Agilité</label>
@@ -106,8 +96,8 @@ export default function ShowPersoCard({
         type="number"
         name="stat_dexterity"
         value={perso.stats.dexterity}
-        min={perso.stats.dexterity}
-        max={perso.stats.dexterity}
+        min={MIN}
+        max={MAX}
         required
       />
       <label htmlFor="stat_luck">Chance</label>
@@ -115,8 +105,8 @@ export default function ShowPersoCard({
         type="number"
         name="stat_luck"
         value={perso.stats.luck}
-        min={perso.stats.luck}
-        max={perso.stats.luck}
+        min={MIN}
+        max={MAX}
         required
       />
       <label htmlFor="stat_intelligence">
@@ -126,8 +116,8 @@ export default function ShowPersoCard({
         type="number"
         name="stat_intelligence"
         value={perso.stats.intelligence}
-        min={perso.stats.intelligence}
-        max={perso.stats.intelligence}
+        min={MIN}
+        max={MAX}
         required
       />
       <label htmlFor="stat_knowledge">Sagesse</label>
@@ -135,8 +125,8 @@ export default function ShowPersoCard({
         type="number"
         name="stat_knowledge"
         value={perso.stats.wisdom}
-        min={perso.stats.wisdom}
-        max={perso.stats.wisdom}
+        min={MIN}
+        max={MAX}
         required
       />
       <input type="hidden" value={id} name="id" />
