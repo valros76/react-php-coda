@@ -1,18 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
-
-export interface PersoI {
-  pseudo: string | null;
-  title: string | null;
-  job: string | null;
-  stats: {
-    strength: number;
-    dexterity: number;
-    luck: number;
-    intelligence: number;
-    wisdom: number;
-  };
-}
+import type { PersoI } from "~/shared/interfaces/Perso.interface";
 
 export default function AddPerso() {
   /**
@@ -25,9 +13,9 @@ export default function AddPerso() {
   let navigate = useNavigate();
 
   let [perso, setPerso] = useState<PersoI>({
-    pseudo: null,
-    title: null,
-    job: null,
+    pseudo: undefined,
+    title: undefined,
+    job: undefined,
     stats: {
       strength: 0,
       dexterity: 0,
@@ -130,9 +118,9 @@ export default function AddPerso() {
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
     if (
-      perso.pseudo === null ||
-      perso.title === null ||
-      perso.job === null ||
+      !perso.pseudo ||
+      !perso.title ||
+      !perso.job ||
       perso.stats.strength <= 0 ||
       perso.stats.dexterity <= 0 ||
       perso.stats.luck <= 0 ||

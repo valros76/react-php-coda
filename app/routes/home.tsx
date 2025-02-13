@@ -13,5 +13,8 @@ export default function Home() {
     <Link to="/perso/add">
       Ajouter un personnage
     </Link>
+    <Link to="/perso/list">
+      Voir la liste des personnages
+    </Link>
   </>;
 }

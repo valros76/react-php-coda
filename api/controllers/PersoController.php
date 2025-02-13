@@ -66,4 +66,35 @@ class PersoController
     echo $response;
     exit;
   }
+
+  public function ShowList(){
+    $configManager = new Config();
+    $persoManager = new Perso(BDD::getInstance($configManager->getConfig()));
+    $persos = $persoManager->getList();
+    if(!$persos){
+      http_response_code(400);
+      echo json_encode([
+        "message" => "Aucun personnage trouvé.",
+        "status" => 400
+      ]);
+      exit;
+    }
+
+    http_response_code(200);
+    echo json_encode([
+      "message" => "Liste des personnages.",
+      "status" => 200,
+      "persos" => $persos
+    ]);
+    exit;
+  }
+
+  public function Show(...$params){
+   $id = $params["id"];
+  }
+
+  public function Delete(...$params){
+    $id = $params["id"];
+  }
+
 }
