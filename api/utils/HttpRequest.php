@@ -48,7 +48,6 @@ class HttpRequest
   {
     switch ($this->method) {
       case "GET":
-      case "DELETE":
         foreach ($this->route->getParams() as $param) {
           if (isset($_GET[$param])) {
             $this->addParam($_GET["param"]);
@@ -57,10 +56,11 @@ class HttpRequest
         break;
       case "POST":
       case "PUT":
+      case "DELETE":
         $jsonInput = file_get_contents("php://input");
         $postData = json_decode($jsonInput, true);
         if ($postData) {
-            $this->params = $postData;
+          $this->params = $postData;
         }
         break;
     }

@@ -79,8 +79,8 @@ export default function ShowPersos(){
             Sagesse : {perso.stats.wisdom}
           </li>
         </ul>
-        <Link to={`/perso/update${perso.id}`}>Modifier</Link>
-        
+        <Link to={`/perso/update/${perso.id}`}>Modifier</Link>
+
         <DeletePerso persoId={perso.id}/>
 
       </article>))}
