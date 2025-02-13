@@ -30,7 +30,7 @@ export default function ShowPersoCard({
       <input
         type="text"
         name="pseudo"
-        value={perso.pseudo}
+        defaultValue={perso.pseudo}
         onChange={(e) => {
           let newPseudo = e.target.value ?? null;
           setPerso((perso: PersoI) => {
@@ -44,7 +44,7 @@ export default function ShowPersoCard({
       <input
         type="text"
         name="title"
-        value={perso.title}
+        defaultValue={perso.title}
         onChange={(e) => {
           let newTitle = e.target.value ?? null;
           setPerso((perso: PersoI) => {
@@ -86,27 +86,45 @@ export default function ShowPersoCard({
       <input
         type="number"
         name="stat_force"
-        value={perso.stats.strength}
+        defaultValue={perso.stats.strength}
         min={MIN}
         max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.strength = Number(e.target.value);
+            return perso;
+          });
+        }}
         required
       />
       <label htmlFor="stat_dexterity">Agilité</label>
       <input
         type="number"
         name="stat_dexterity"
-        value={perso.stats.dexterity}
+        defaultValue={perso.stats.dexterity}
         min={MIN}
         max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.strength = Number(e.target.value);
+            return perso;
+          });
+        }}
         required
       />
       <label htmlFor="stat_luck">Chance</label>
       <input
         type="number"
         name="stat_luck"
-        value={perso.stats.luck}
+        defaultValue={perso.stats.luck}
         min={MIN}
         max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.strength = Number(e.target.value);
+            return perso;
+          });
+        }}
         required
       />
       <label htmlFor="stat_intelligence">
@@ -115,18 +133,30 @@ export default function ShowPersoCard({
       <input
         type="number"
         name="stat_intelligence"
-        value={perso.stats.intelligence}
+        defaultValue={perso.stats.intelligence}
         min={MIN}
         max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.strength = Number(e.target.value);
+            return perso;
+          });
+        }}
         required
       />
       <label htmlFor="stat_knowledge">Sagesse</label>
       <input
         type="number"
         name="stat_knowledge"
-        value={perso.stats.wisdom}
+        defaultValue={perso.stats.wisdom}
         min={MIN}
         max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.strength = Number(e.target.value);
+            return perso;
+          });
+        }}
         required
       />
       <input type="hidden" value={id} name="id" />
