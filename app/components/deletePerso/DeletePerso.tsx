@@ -6,7 +6,7 @@ export default function DeletePerso({ ...props }: any){
 
   let navigate = useNavigate();
 
-  let [id, setId] = useState(undefined);
+  let [id, setId] = useState("");
 
   useEffect(() => {
     if(!id){
@@ -15,7 +15,8 @@ export default function DeletePerso({ ...props }: any){
     }
   }, [id]);
 
-  const submitDeleteForm = async () => {
+  const submitDeleteForm = async (e: any) => {
+    e.preventDefault();
     await fetch("http://127.0.0.1:5500/perso/delete", {
       method: "DELETE",
       headers: {
