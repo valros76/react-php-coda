@@ -36,7 +36,6 @@ export default function ShowPersos() {
 
         let persosList = datas.persos.map(
           (perso: PersoI) => {
-            console.table(perso);
             perso = {
               id: perso.id,
               pseudo: perso.pseudo,

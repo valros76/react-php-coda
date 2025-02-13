@@ -32,6 +32,15 @@
     ]
   },
   {
+    "path": "/perso/update",
+    "controller": "Perso",
+    "action": "Update",
+    "method": "PUT",
+    "params": [
+      "perso"
+    ]
+  },
+  {
     "path": "/perso/delete",
     "controller": "Perso",
     "action": "Delete",

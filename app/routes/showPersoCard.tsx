@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import type { Route } from "../+types/root";
 import type { PersoI } from "~/shared/interfaces/Perso.interface";
 import { PersoContext } from "~/shared/contexts/PersoContext";
+import { useNavigate } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
   /**
@@ -14,10 +15,46 @@ export default function ShowPersoCard({
 }: Route.ComponentProps) {
   const { id } = params;
 
-  let {MIN, MAX, perso, setPerso, jobs} = useContext(PersoContext);
+  let navigate = useNavigate();
 
-  const submitUpdateForm = (e: any) => {
+  let { MIN, MAX, perso, setPerso, jobs } =
+    useContext(PersoContext);
+
+  const submitUpdateForm = async (e: any) => {
     e.preventDefault();
+
+    if (
+      !perso.pseudo ||
+      !perso.title ||
+      !perso.job ||
+      perso.stats.strength <= 0 ||
+      perso.stats.dexterity <= 0 ||
+      perso.stats.luck <= 0 ||
+      perso.stats.intelligence <= 0 ||
+      perso.stats.wisdom <= 0
+    ) {
+      throw new Error(
+        "Une (ou plusieurs) statistique est invalide."
+      );
+    }
+
+    await fetch("http://locahost:5500/perso/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      mode: "cors",
+      body: JSON.stringify(perso)
+    })
+    .then(response => response.json())
+    .then(datas => {
+      if(datas.status !== 200){
+        throw new Error("Le status de la requête est invalide.");
+      }
+
+      navigate("/perso/list");
+    })
+    .catch(err=>console.error(err));
   };
 
   return (
@@ -159,7 +196,11 @@ export default function ShowPersoCard({
         }}
         required
       />
-      <input type="hidden" value={id} name="id" />
+      <input
+        type="hidden"
+        value={id}
+        name="id"
+      />
       <button type="submit">Créer</button>
     </form>
   );
