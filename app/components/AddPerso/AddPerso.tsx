@@ -90,7 +90,7 @@ export default function AddPerso() {
       <label htmlFor="class">Choix de la classe</label>
       <select
         name="class"
-        defaultValue={classPerso}
+        value={classPerso}
         onChange={(e) => {
           setPerso((perso: PersoI) => {
             setClassPerso(e.target.value);
