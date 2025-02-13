@@ -95,17 +95,17 @@ export default function AddPerso() {
           max: MAX - (MAX - MIN) / 3,
         };
         break;
-      case "noob":
-        range = {
-          min: MIN,
-          max: MAX - (MAX - MIN) / 1.5,
-        };
-        break;
       case "warrior":
-      default:
         range = {
           min: MIN + (MAX - MIN) / 1.5,
           max: MAX,
+        };
+        break;
+      case "noob":
+      default:
+        range = {
+          min: MIN,
+          max: MAX - (MAX - MIN) / 1.5,
         };
         break;
     }
@@ -162,7 +162,7 @@ export default function AddPerso() {
         }
         navigate("/");
       })
-      .catch((err) => console.log(`Erreur : ${err}`));
+      .catch((err) => console.error(`Erreur : ${err}`));
   };
 
   return (
@@ -176,18 +176,11 @@ export default function AddPerso() {
         type="text"
         name="pseudo"
         onChange={(e) => {
-          let newPseudo = e.target.value ?? undefined;
-          if (newPseudo) {
-            setPerso((perso) => {
-              perso.pseudo = newPseudo;
-              return perso;
-            });
-          } else {
-            setPerso((perso) => {
-              perso.pseudo = null;
-              return perso;
-            });
-          }
+          let newPseudo = e.target.value ?? null;
+          setPerso((perso) => {
+            perso.pseudo = newPseudo;
+            return perso;
+          });
         }}
         required
       />
@@ -196,18 +189,11 @@ export default function AddPerso() {
         type="text"
         name="title"
         onChange={(e) => {
-          let newTitle = e.target.value ?? undefined;
-          if (newTitle) {
-            setPerso((perso) => {
-              perso.title = newTitle;
-              return perso;
-            });
-          } else {
-            setPerso((perso) => {
-              perso.title = null;
-              return perso;
-            });
-          }
+          let newTitle = e.target.value ?? null;
+          setPerso((perso) => {
+            perso.title = newTitle;
+            return perso;
+          });
         }}
         required
       />

@@ -2,7 +2,12 @@
 class HomeController{
 
   public function Index(){
-    echo "Hello Coda !";
+    http_response_code(200);
+    echo json_encode([
+      "message" => "Hello Coda !",
+      "status" => 200
+    ]);
+    exit;
   }
 
 }

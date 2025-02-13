@@ -51,7 +51,7 @@ class HttpRequest
       case "DELETE":
         foreach ($this->route->getParams() as $param) {
           if (isset($_GET[$param])) {
-            $this->params[] = $_GET[$param];
+            $this->addParam($_GET["param"]);
           }
         }
         break;

@@ -5,15 +5,13 @@ class Route{
   private $action;
   private $method;
   private $params;
-  private $manager;
 
   public function __construct($route){
     $this->path = $route->path;
     $this->controller = $route->controller;
     $this->action = $route->action;
     $this->method = $route->method;
-    $this->params = $route->params ?? $route->param;
-    $this->manager = $route->manager;
+    $this->params = $route->params;
   }
 
   public function getPath(){
@@ -34,10 +32,6 @@ class Route{
 
   public function getParams(){
     return $this->params;
-  }
-
-  public function getManager(){
-    return $this->manager;
   }
 
   public function run($httpRequest, $config){

@@ -10,7 +10,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return <>
-    <Link to="/persos/add">
+    <Link to="/perso/add">
       Ajouter un personnage
     </Link>
   </>;
