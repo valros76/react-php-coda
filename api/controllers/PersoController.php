@@ -9,12 +9,12 @@ class PersoController
     $job = $perso["job"] ?? null;
     $stats = $perso["stats"] ?? null;
 
-    if(
+    if (
       !$pseudo
       || !$title
       || !$job
       || !$stats
-    ){
+    ) {
       http_response_code(400);
       echo json_encode([
         "message" => "Une ou plusieurs valeurs ne sont pas définies.",
@@ -67,11 +67,12 @@ class PersoController
     exit;
   }
 
-  public function ShowList(){
+  public function ShowList()
+  {
     $configManager = new Config();
     $persoManager = new Perso(BDD::getInstance($configManager->getConfig()));
     $persos = $persoManager->getList();
-    if(!$persos){
+    if (!$persos) {
       http_response_code(400);
       echo json_encode([
         "message" => "Aucun personnage trouvé.",
@@ -89,17 +90,104 @@ class PersoController
     exit;
   }
 
-  public function Show(...$params){
-   $id = $params["id"];
-  }
-
-  public function Delete(...$params){
+  public function Show(...$params)
+  {
     $id = $params["id"];
-    
+
+    if (!$id) {
+      http_response_code(400);
+      echo json_encode([
+        "message" => "Le paramètre ID est invalide.",
+        "status" => 400
+      ]);
+      exit;
+    }
+
     $config = new Config();
     $persoManager = new Perso(BDD::getInstance($config->getConfig()));
 
-    if(!$persoManager->deleteById($id)){
+    $perso = $persoManager->getById($id);
+    if (!$perso) {
+      http_response_code(400);
+      echo json_encode([
+        "message" => "Une erreur s'est produite lors de la récupération du personnage.",
+        "status" => 400
+      ]);
+      exit;
+    }
+    
+    http_response_code(200);
+    echo json_encode([
+      "message" => "Personnage récupéré.",
+      "status" => 200,
+      "perso" => $perso
+    ]);
+    exit;
+  }
+
+  public function Update(...$perso)
+  {
+    $id = $perso["id"] ?? null;
+    $pseudo = $perso["pseudo"] ?? null;
+    $title = $perso["title"] ?? null;
+    $job = $perso["job"] ?? null;
+    $stats = [
+      "strength" => $perso["stats"]["strength"] ?? null,
+      "dexterity" => $perso["stats"]["dexterity"] ?? null,
+      "luck" => $perso["stats"]["luck"] ?? null,
+      "intelligence" => $perso["stats"]["intelligence"] ?? null,
+      "wisdom" => $perso["stats"]["wisdom"] ?? null,
+    ];
+
+    if (
+      !$id
+      || !$pseudo
+      || !$title
+      || !$job
+      || !$stats
+    ) {
+      http_response_code(400);
+      echo json_encode([
+        "message" => "Les paramètres sont invalides.",
+        "status" => 400
+      ]);
+      exit;
+    }
+
+    $config = new Config();
+    $persoManager = new Perso(BDD::getInstance($config->getConfig()));
+
+    if (!$persoManager->update([
+      "id" => $id,
+      "pseudo" => $pseudo,
+      "title" => $title,
+      "job" => $job,
+      "stats" => $stats,
+    ])) {
+      http_response_code(400);
+      echo json_encode([
+        "message" => "Une erreur s'est produite lors de la modification du personnage.",
+        "status" => 400
+      ]);
+      exit;
+    }
+
+    http_response_code(200);
+    echo json_encode([
+      "message" => "Mise à jour du personnage effectuée.",
+      "status" => 200
+    ]);
+    exit;
+  }
+
+  public function Delete(...$params)
+  {
+    $id = $params["id"];
+
+    $config = new Config();
+    $persoManager = new Perso(BDD::getInstance($config->getConfig()));
+
+    if (!$persoManager->deleteById($id)) {
       http_response_code(400);
       echo json_encode([
         "message" => "La suppression du personnage a échouée.",
@@ -115,5 +203,4 @@ class PersoController
     ]);
     exit;
   }
-
 }

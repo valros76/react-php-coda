@@ -38,7 +38,7 @@ export default function ShowPersoCard({
       );
     }
 
-    await fetch("http://locahost:5500/perso/update", {
+    await fetch("http://localhost:5500/perso/update", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
