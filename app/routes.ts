@@ -6,6 +6,7 @@ export default [
   ...prefix("perso", [
     // index(""),
     route("add", "routes/showAddForm.tsx"),
-    route("list", "routes/showPersos.tsx")
+    route("list", "routes/showPersos.tsx"),
+    route("update/:id", "routes/showPersoCard.tsx")
   ])
 ] satisfies RouteConfig;
