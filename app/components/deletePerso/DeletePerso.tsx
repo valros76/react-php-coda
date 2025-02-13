@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 
-export default function DeletePerso(){
+export default function DeletePerso({ ...props }: any){
 
   let navigate = useNavigate();
 
   let [id, setId] = useState(undefined);
+
+  useEffect(() => {
+    if(!id){
+      const {persoId} = props;
+      setId(persoId);
+    }
+  }, [id]);
 
   const submitDeleteForm = async () => {
     await fetch("http://127.0.0.1:5500/perso/delete", {

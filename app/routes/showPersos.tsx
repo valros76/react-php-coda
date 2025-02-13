@@ -55,7 +55,7 @@ export default function ShowPersos(){
 
   return(
     <section className="main-sections">
-      {persos.length > 0 && persos.map((perso: PersoI) => (<article className="main-articles">
+      {persos.length > 0 && persos.map((perso: PersoI) => (<article className="main-articles" key={perso.id}>
         <h2 className="main-articles-title">
           {perso.pseudo}, {perso.title}
         </h2>
@@ -80,7 +80,9 @@ export default function ShowPersos(){
           </li>
         </ul>
         <Link to={`/perso/update${perso.id}`}>Modifier</Link>
-        <DeletePerso/>
+        
+        <DeletePerso persoId={perso.id}/>
+
       </article>))}
     </section>
   );
