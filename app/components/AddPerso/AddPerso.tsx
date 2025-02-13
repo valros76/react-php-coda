@@ -1,5 +1,6 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent, useContext } from "react";
 import { useNavigate } from "react-router";
+import { PersoContext } from "~/shared/contexts/PersoContext";
 import type { PersoI } from "~/shared/interfaces/Perso.interface";
 
 export default function AddPerso() {
@@ -10,110 +11,11 @@ export default function AddPerso() {
    * - Idée : Génération du pseudo/titre auto
    */
 
+  let {MIN, MAX, perso, setPerso, jobs, randomStats} = useContext(PersoContext);
+
   let navigate = useNavigate();
 
-  let [perso, setPerso] = useState<PersoI>({
-    pseudo: undefined,
-    title: undefined,
-    job: undefined,
-    stats: {
-      strength: 0,
-      dexterity: 0,
-      luck: 0,
-      intelligence: 0,
-      wisdom: 0,
-    },
-  });
-
-  let [options, SetOptions] = useState([
-    {
-      value: "warrior",
-      name: "Guerrier",
-    },
-
-    {
-      value: "priest",
-      name: "Prêtre",
-    },
-    {
-      value: "noob",
-      name: "Noob",
-    },
-    {
-      value: "warlock",
-      name: "Démoniste",
-    },
-    {
-      value: "rogue",
-      name: "Voleur",
-    },
-  ]);
-
   let [classPerso, setClassPerso] = useState("");
-
-  let generateRandomIndex = (min: number, max: number) => {
-    min = Math.ceil(min);
-
-    max = Math.floor(max);
-
-    let getRandomIndex = Math.floor(
-      Math.random() * (max - min + 1) + min
-    );
-    return getRandomIndex;
-  };
-
-  const randomStats = (classPerso: string): any => {
-    const MIN: number = 10;
-    const MAX: number = 25;
-    let range = {
-      min: 0,
-      max: 0,
-    };
-
-    switch (classPerso) {
-      case "warlock":
-        range = {
-          min: MIN + (MAX - MIN) / 3,
-          max: MAX,
-        };
-        break;
-      case "priest":
-        range = {
-          min: MIN + (MAX - MIN) / 5,
-          max: MAX - (MAX - MIN) / 3,
-        };
-        break;
-      case "warrior":
-        range = {
-          min: MIN + (MAX - MIN) / 1.5,
-          max: MAX,
-        };
-        break;
-      case "noob":
-      default:
-        range = {
-          min: MIN,
-          max: MAX - (MAX - MIN) / 1.5,
-        };
-        break;
-    }
-    setPerso((perso) => {
-      perso.stats = {
-        strength: generateRandomIndex(range.min, range.max),
-        dexterity: generateRandomIndex(
-          range.min,
-          range.max
-        ),
-        luck: generateRandomIndex(range.min, range.max),
-        intelligence: generateRandomIndex(
-          range.min,
-          range.max
-        ),
-        wisdom: generateRandomIndex(range.min, range.max),
-      };
-      return perso;
-    });
-  };
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
@@ -165,7 +67,7 @@ export default function AddPerso() {
         name="pseudo"
         onChange={(e) => {
           let newPseudo = e.target.value ?? null;
-          setPerso((perso) => {
+          setPerso((perso: PersoI) => {
             perso.pseudo = newPseudo;
             return perso;
           });
@@ -178,7 +80,7 @@ export default function AddPerso() {
         name="title"
         onChange={(e) => {
           let newTitle = e.target.value ?? null;
-          setPerso((perso) => {
+          setPerso((perso: PersoI) => {
             perso.title = newTitle;
             return perso;
           });
@@ -190,7 +92,7 @@ export default function AddPerso() {
         name="class"
         defaultValue={classPerso}
         onChange={(e) => {
-          setPerso((perso) => {
+          setPerso((perso: PersoI) => {
             setClassPerso(e.target.value);
             perso.job = e.target.value;
             randomStats(classPerso);
@@ -206,7 +108,7 @@ export default function AddPerso() {
         >
           -- Choisir une classe --
         </option>
-        {options.map((item) => (
+        {jobs.map((item: any) => (
           <option
             value={item.value}
             key={`${item.name}-${item.value}`}
@@ -220,8 +122,15 @@ export default function AddPerso() {
         type="number"
         name="stat_force"
         value={perso.stats.strength}
-        min={perso.stats.strength}
-        max={perso.stats.strength}
+        min={MIN}
+        max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.strength = Number(e.target.value);
+
+            return perso;
+          });
+        }}
         required
       />
       <label htmlFor="stat_dexterity">Agilité</label>
@@ -229,8 +138,15 @@ export default function AddPerso() {
         type="number"
         name="stat_dexterity"
         value={perso.stats.dexterity}
-        min={perso.stats.dexterity}
-        max={perso.stats.dexterity}
+        min={MIN}
+        max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.dexterity = Number(e.target.value);
+
+            return perso;
+          });
+        }}
         required
       />
       <label htmlFor="stat_luck">Chance</label>
@@ -238,8 +154,15 @@ export default function AddPerso() {
         type="number"
         name="stat_luck"
         value={perso.stats.luck}
-        min={perso.stats.luck}
-        max={perso.stats.luck}
+        min={MIN}
+        max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.luck = Number(e.target.value);
+
+            return perso;
+          });
+        }}
         required
       />
       <label htmlFor="stat_intelligence">
@@ -249,17 +172,31 @@ export default function AddPerso() {
         type="number"
         name="stat_intelligence"
         value={perso.stats.intelligence}
-        min={perso.stats.intelligence}
-        max={perso.stats.intelligence}
+        min={MIN}
+        max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.intelligence = Number(e.target.value);
+
+            return perso;
+          });
+        }}
         required
       />
-      <label htmlFor="stat_knowledge">Sagesse</label>
+      <label htmlFor="stat_wisdom">Sagesse</label>
       <input
         type="number"
-        name="stat_knowledge"
+        name="stat_wisdom"
         value={perso.stats.wisdom}
-        min={perso.stats.wisdom}
-        max={perso.stats.wisdom}
+        min={MIN}
+        max={MAX}
+        onChange={(e) => {
+          setPerso((perso: PersoI) => {
+            perso.stats.wisdom = Number(e.target.value);
+
+            return perso;
+          });
+        }}
         required
       />
       <button type="submit">Créer</button>
